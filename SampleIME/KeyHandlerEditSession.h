@@ -28,3 +28,20 @@ private:
     WCHAR _wch;      // character code
     _KEYSTROKE_STATE _KeyState;     // key function regarding virtual key
 };
+
+class CCharHandlerEditSession : public CEditSessionBase
+{
+public:
+    CCharHandlerEditSession(_In_ CSampleIME *pTextService, ITfContext *pContext, WCHAR *wch) : CEditSessionBase(pTextService, pContext)
+    {
+        _wch = wch;
+		_pTextService = pTextService;
+    }
+
+    // ITfEditSession
+    STDMETHODIMP DoEditSession(TfEditCookie ec);
+
+private:
+    WCHAR *_wch;      // character code
+	CSampleIME *_pTextService;
+};

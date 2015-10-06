@@ -44,3 +44,31 @@ STDAPI CKeyHandlerEditSession::DoEditSession(TfEditCookie ec)
 
     return hResult;
 }
+
+STDAPI CCharHandlerEditSession::DoEditSession(TfEditCookie ec)
+{
+	CStringRange candidateString;
+	candidateString.Set(_wch, 1);
+	
+	HRESULT setTexthr = E_FAIL;
+
+    ULONG fetched = 0;
+    TF_SELECTION tfSelection;
+
+    if ((setTexthr = _pContext->GetSelection(ec, TF_DEFAULT_SELECTION, 1, &tfSelection, &fetched)) != S_OK || fetched != 1)
+        return setTexthr;
+
+    setTexthr = tfSelection.range->SetText(ec, 0, (&candidateString)->Get(), (LONG)(&candidateString)->GetLength());
+    if (setTexthr == S_OK)
+    {
+        tfSelection.range->Collapse(ec, TF_ANCHOR_END);
+        _pContext->SetSelection(ec, 1, &tfSelection);
+    }
+
+    tfSelection.range->Release();
+
+
+    HRESULT hResult = S_OK;
+
+    return hResult;
+}
