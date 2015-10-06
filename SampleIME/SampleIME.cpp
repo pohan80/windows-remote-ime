@@ -87,6 +87,8 @@ CSampleIME::CSampleIME()
     _pContext = nullptr;
 
     _refCount = 1;
+
+	_isRemoteUse = false;
 }
 
 //+---------------------------------------------------------------------------

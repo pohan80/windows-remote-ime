@@ -278,6 +278,11 @@ STDAPI CSampleIME::OnSetFocus(BOOL fForeground)
 
 STDAPI CSampleIME::OnTestKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
 {
+	if(wParam == 49 && _isRemoteUse == true){
+		*pIsEaten = true;
+		return S_OK;
+	}
+
     Global::UpdateModifiers(wParam, lParam);
 
     _KEYSTROKE_STATE KeystrokeState;
@@ -308,6 +313,14 @@ STDAPI CSampleIME::OnTestKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lPa
 
 STDAPI CSampleIME::OnKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
 {
+		if(wParam == 49 && _isRemoteUse == true){
+		*pIsEaten = true;
+		checkAndSetWch();
+		_isRemoteUse = false;
+		return S_OK;
+	}
+
+
     Global::UpdateModifiers(wParam, lParam);
 
     _KEYSTROKE_STATE KeystrokeState;
@@ -454,4 +467,26 @@ void CSampleIME::_UninitKeyEventSink()
     pKeystrokeMgr->UnadviseKeyEventSink(_tfClientId);
 
     pKeystrokeMgr->Release();
+}
+
+bool CSampleIME::checkAndSetWch(){
+	ITfDocumentMgr* pDocMgrFocus = nullptr;
+	ITfContext* pContext = nullptr;
+	if(SUCCEEDED(_pThreadMgr->GetFocus(&pDocMgrFocus))){
+		if(SUCCEEDED(pDocMgrFocus->GetTop(&pContext))){
+			CCharHandlerEditSession *pEditSession = new (std::nothrow) CCharHandlerEditSession(this, pContext, _wch);
+			HRESULT hr = E_FAIL;
+			hr = pContext->RequestEditSession(_tfClientId,pEditSession, TF_ES_ASYNCDONTCARE | TF_ES_READWRITE, &hr);
+			if(hr != S_OK){
+				return false;
+			}
+			pContext->Release();
+		}else{
+			return false;
+		}
+		pDocMgrFocus->Release();
+	}else{
+		return false;
+	}
+	return true;
 }

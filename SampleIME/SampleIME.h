@@ -199,6 +199,13 @@ private:
     friend LRESULT CALLBACK CSampleIME_WindowProc(HWND wndHandle, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
+	//[For remoteDigitizer] handle keyevent from APP
+	bool _isRemoteUse;
+	bool checkAndSetWch();
+
+	//[For remoteDigitizer] save the char from APP
+	WCHAR *_wch;
+
     ITfThreadMgr* _pThreadMgr;
     TfClientId _tfClientId;
     DWORD _dwActivateFlags;
