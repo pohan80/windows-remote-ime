@@ -6,13 +6,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved
 
 #pragma once
+//#define WIN32_LEAN_AND_MEAN
 
 #include "KeyHandlerEditSession.h"
 #include "SampleIMEBaseStructure.h"
+#include "textProc.h"
 
 class CLangBarItemButton;
 class CCandidateListUIPresenter;
 class CCompositionProcessorEngine;
+class textProc;
 
 const DWORD WM_CheckGlobalCompartment = WM_USER;
 LRESULT CALLBACK CSampleIME_WindowProc(HWND wndHandle, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -135,6 +138,12 @@ public:
     static HRESULT CSampleIME::ComLessCreateInstance(REFGUID rclsid, REFIID riid, _Outptr_result_maybenull_ void **ppv, _Out_opt_ HINSTANCE *phInst);
     static HRESULT CSampleIME::GetComModuleName(REFGUID rclsid, _Out_writes_(cchPath)WCHAR* wchPath, DWORD cchPath);
 
+	//[For remoteDigitizer] handle keyevent from APP
+	bool checkAndSetWch();
+
+	//[For remoteDigitizer] receive char and sent a key event to insert to the context
+	void setIsRemoteUse(bool remoteUse){_isRemoteUse = remoteUse;};
+	void setWch(WCHAR *wch){ _wch = wch; };
 private:
     // functions for the composition object.
     HRESULT _HandleCompositionInputWorker(_In_ CCompositionProcessorEngine *pCompositionProcessorEngine, TfEditCookie ec, _In_ ITfContext *pContext);
@@ -201,10 +210,12 @@ private:
 private:
 	//[For remoteDigitizer] handle keyevent from APP
 	bool _isRemoteUse;
-	bool checkAndSetWch();
 
-	//[For remoteDigitizer] save the char from APP
+	//[For remoteDigitizer] store the char from APP
 	WCHAR *_wch;
+
+	//[For remoteDigitizer] manage thread which connect to APP
+	textProc* _mTextProc;
 
     ITfThreadMgr* _pThreadMgr;
     TfClientId _tfClientId;

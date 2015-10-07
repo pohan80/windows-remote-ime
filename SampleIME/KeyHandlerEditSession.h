@@ -6,9 +6,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved
 
 #pragma once
-
+#define WIN32_LEAN_AND_MEAN
 #include "EditSession.h"
 #include "Globals.h"
+#include "windows.h"
 
 class CKeyHandlerEditSession : public CEditSessionBase
 {

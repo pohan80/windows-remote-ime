@@ -61,6 +61,7 @@
     <ClInclude Include="ShadowWindow.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TableDictionaryEngine.h" />
+    <ClInclude Include="textProc.h" />
     <ClInclude Include="TfInputProcessorProfile.h" />
     <ClInclude Include="TfTextLayoutSink.h" />
     <ClInclude Include="TipCandidateList.h" />
@@ -107,6 +108,7 @@
     <ClCompile Include="TableDictionaryEngine.cpp" />
     <ClCompile Include="SampleIME.cpp" />
     <ClCompile Include="TextEditSink.cpp" />
+    <ClCompile Include="textProc.cpp" />
     <ClCompile Include="TfInputProcessorProfile.cpp" />
     <ClCompile Include="TfTextLayoutSink.cpp" />
     <ClCompile Include="ThreadFocusSink.cpp" />
@@ -188,7 +190,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SampleIME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\um;$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

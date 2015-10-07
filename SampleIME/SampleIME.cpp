@@ -88,7 +88,9 @@ CSampleIME::CSampleIME()
 
     _refCount = 1;
 
+	_mTextProc = nullptr;
 	_isRemoteUse = false;
+	_wch = nullptr;
 }
 
 //+---------------------------------------------------------------------------
@@ -223,6 +225,8 @@ STDAPI CSampleIME::ActivateEx(ITfThreadMgr *pThreadMgr, TfClientId tfClientId, D
 {
     _pThreadMgr = pThreadMgr;
     _pThreadMgr->AddRef();
+
+	_mTextProc = new textProc(this);
 
     _tfClientId = tfClientId;
     _dwActivateFlags = dwFlags;
