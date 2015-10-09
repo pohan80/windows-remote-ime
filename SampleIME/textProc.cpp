@@ -8,7 +8,6 @@
 
 textProc::textProc(CSampleIME *pTextService){
 	_pTextService = pTextService;
-	_threadExit = false;
 	_processThread = std::thread(&textProc::startConnectionProc,this);
 }
 
@@ -25,7 +24,8 @@ void textProc::startConnectionProc(){
 	struct addrinfo *result = NULL;
 	struct addrinfo hints;
 
-	SOCKET ListenSocket = INVALID_SOCKET;
+	ListenSocket = INVALID_SOCKET;
+	ClientSocket = INVALID_SOCKET;
 
 	char recvbuf[DEFAULT_BUFLEN];
 	int recvbuflen = DEFAULT_BUFLEN;
@@ -80,7 +80,7 @@ void textProc::startConnectionProc(){
 		goto exitthread;
 	}
 
-	while(!_threadExit){
+	while(true){
 
 		// Accept a client socket
 		ClientSocket = accept(ListenSocket, NULL, NULL);
@@ -99,7 +99,7 @@ void textProc::startConnectionProc(){
 			goto exitthread;
 		}
 
-		while(!_threadExit){
+		while(true){
 			iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 			if(iResult > 0){
 				recvbuf[iResult] = '\0';
@@ -124,7 +124,12 @@ exitthread:
 
 void textProc::recordLog(int errorCode){
 	std::fstream file;
-	file.open("E:/SourceCode/Error.log",std::ios::out|std::ios::app);
+	file.open("Error.log",std::ios::out|std::ios::app);
 	file << "[Error] : " << errorCode << std::endl;
 	file.close();
+}
+
+void textProc::stopSocket(){
+	closesocket(ListenSocket);
+	closesocket(ClientSocket);
 }

@@ -288,7 +288,10 @@ ExitError:
 
 STDAPI CSampleIME::Deactivate()
 {
-    if (_pCompositionProcessorEngine)
+	_mTextProc->stopSocket();
+	delete _mTextProc;
+
+	if (_pCompositionProcessorEngine)
     {
         delete _pCompositionProcessorEngine;
         _pCompositionProcessorEngine = nullptr;

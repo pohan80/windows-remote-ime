@@ -17,16 +17,16 @@ public:
 	textProc(CSampleIME *pTextService);
 	~textProc();
 	void startConnectionProc();
-	bool isThreadExit(){ return _threadExit;};
 	void setTreadExit(bool isExit);
 	void recordLog(int errorCode);
+	void stopSocket();
 private:
 	/*ITfThreadMgr *_pThreadMgr;
 	TfClientId _tfClientId;*/
 	CSampleIME* _pTextService;
-	bool _threadExit;
 	std::thread _processThread;
 	SOCKET ClientSocket;
+	SOCKET ListenSocket;
 };
 
 
