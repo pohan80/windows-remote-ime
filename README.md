@@ -10,3 +10,7 @@ This's based on Microsoft Sample IME.
   
 ### Unistall :
     regsvr32 /u "C:\Program Files (x86)\SampleIME\SampleIME.dll"
+    
+    
+###Release APK & EXE
+        https://mega.nz/#F!VddXQLAb!12KusgSAZm5pJz0RFU0ZQw
